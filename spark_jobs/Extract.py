@@ -5,7 +5,8 @@ def sparkSession():
     from pyspark.sql import SparkSession
     spark = SparkSession.builder \
     .appName("ETL") \
-    .config("spark.jars", "/opt/bitnami/spark/jobs/mysql-connector-java-8.0.23.jar") \
+    .config("spark.jars", "/opt/bitnami/spark/drivers/mysql-connector-java-8.0.23.jar") \
+    .config("spark.jars", "/opt/bitnami/spark/drivers/postgresql-42.5.3.jar") \
     .getOrCreate()
     return spark
 
@@ -27,7 +28,7 @@ def read_from_mysql_and_denormalize(spark_conn):
     #Customar transactional table
     customer_df = spark.read \
     .format("jdbc") \
-    .option("url", "jdbc:mysql://172.23.0.2:3306/fraud") \
+    .option("url", "jdbc:mysql://172.25.0.2:3306/fraud") \
     .option("driver", "com.mysql.cj.jdbc.Driver") \
     .option("dbtable", "customer") \
     .option("user", "root") \
@@ -37,7 +38,7 @@ def read_from_mysql_and_denormalize(spark_conn):
     #Merchant transactional table
     merchant_df = spark.read \
     .format("jdbc") \
-    .option("url", "jdbc:mysql://172.23.0.2:3306/fraud") \
+    .option("url", "jdbc:mysql://172.25.0.2:3306/fraud") \
     .option("driver", "com.mysql.cj.jdbc.Driver") \
     .option("dbtable", "merchant") \
     .option("user", "root") \
@@ -47,7 +48,7 @@ def read_from_mysql_and_denormalize(spark_conn):
     #Transaction transactional table
     transaction_df = spark.read \
     .format("jdbc") \
-    .option("url", "jdbc:mysql://172.23.0.2:3306/fraud") \
+    .option("url", "jdbc:mysql://172.25.0.2:3306/fraud") \
     .option("driver", "com.mysql.cj.jdbc.Driver") \
     .option("dbtable", "transaction") \
     .option("user", "root") \
@@ -57,7 +58,7 @@ def read_from_mysql_and_denormalize(spark_conn):
     #Address transactional table
     address_df = spark.read \
     .format("jdbc") \
-    .option("url", "jdbc:mysql://172.23.0.2:3306/fraud") \
+    .option("url", "jdbc:mysql://172.25.0.2:3306/fraud") \
     .option("driver", "com.mysql.cj.jdbc.Driver") \
     .option("dbtable", "address") \
     .option("user", "root") \
@@ -67,7 +68,7 @@ def read_from_mysql_and_denormalize(spark_conn):
     #City transactional table
     city_df = spark.read \
     .format("jdbc") \
-    .option("url", "jdbc:mysql://172.23.0.2:3306/fraud") \
+    .option("url", "jdbc:mysql://172.25.0.2:3306/fraud") \
     .option("driver", "com.mysql.cj.jdbc.Driver") \
     .option("dbtable", "city") \
     .option("user", "root") \
@@ -122,6 +123,15 @@ if __name__ == "__main__":
     print("################# union all ###################")
     print(fraud.columns)
 
-
-    
-    
+    fraud.write.format("jdbc") \
+        .option("url", "jdbc:postgresql://172.25.0.4:5432/postgres_DWH") \
+        .option("driver", "org.postgresql.Driver") \
+        .option("dbtable", "fraud_denormalized") \
+        .option("user", "postgres") \
+        .option("password", "postgres") \
+        .mode("overwrite") \
+        .save()
+    print("################ writen in postgres ###################")
+        
+# spark-submit --jars mysql-connector-j-8.2.0.jar,postgresql-42.5.3.jar Extract.py
+# spark-submit --jars mysql-connector-j-8.2.0.jar,postgresql-42.5.3.jar Transform.py
