@@ -101,8 +101,20 @@ def transform(csv_df, json_df, parquet_df, mysql_df):
     df1= csv_df.unionAll(json_df)
     df2= parquet_df.unionAll(mysql_df)
     finalDF= df1.unionAll(df2)
-
+    
     return finalDF
+
+
+def load_into_postgres_DB(df, db_name, table_name):
+    df.write.format("jdbc") \
+        .option("url", f"jdbc:postgresql://172.25.0.4:5432/{db_name}") \
+        .option("driver", "org.postgresql.Driver") \
+        .option("dbtable", f"{table_name}") \
+        .option("user", "postgres") \
+        .option("password", "postgres") \
+        .mode("overwrite") \
+        .save()
+    print("################# DataFrame has been writen #########################")
     
 if __name__ == "__main__":
     spark= sparkSession()
@@ -121,17 +133,10 @@ if __name__ == "__main__":
     
     fraud= transform(csv_data, json_data, parq_data, mysql_data)
     print("################# union all ###################")
-    print(fraud.columns)
-
-    fraud.write.format("jdbc") \
-        .option("url", "jdbc:postgresql://172.25.0.4:5432/postgres_DWH") \
-        .option("driver", "org.postgresql.Driver") \
-        .option("dbtable", "fraud_denormalized") \
-        .option("user", "postgres") \
-        .option("password", "postgres") \
-        .mode("overwrite") \
-        .save()
-    print("################ writen in postgres ###################")
-        
+    
+    load_into_postgres_DB(fraud, db_name="postgres_DWH", table_name="fraud_denormalized")
+   
 # spark-submit --jars mysql-connector-j-8.2.0.jar,postgresql-42.5.3.jar Extract.py
 # spark-submit --jars mysql-connector-j-8.2.0.jar,postgresql-42.5.3.jar Transform.py
+
+

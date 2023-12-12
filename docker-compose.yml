@@ -10,6 +10,7 @@ services:
     volumes:
       - ./spark_jobs/:/opt/bitnami/spark/jobs/
       - ./data/:/opt/bitnami/spark/data/
+      - ./drivers/:/opt/bitnami/spark/drivers/
     environment:
       SPARK_MODE: master
     networks:
@@ -54,7 +55,23 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    networks:
+      - spark_net
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
 networks:
   spark_net:
+
 volumes:
   mysql_data:
+  postgres_data:
