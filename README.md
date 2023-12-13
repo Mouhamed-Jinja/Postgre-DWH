@@ -37,8 +37,18 @@ Not all solutions need to be complex. This project focuses on supporting small a
 
 # Getting Started
 To start using this solution, follow these simple steps:
-
-
+- Clone the repo:
+  ```
+    https://github.com/Mouhamed-Jinja/Postgre-DWH.git
+  ```
+- Up the docker-compose file:
+  ```
+    docker-compose up -d
+  ```
+- Access Postgres Service and create a database, you can access it by inspecting the IP and the port and using any IDE to connect the Service:
+  ```
+    CREATE DATABASE fraud;
+  ```
 
 
 
