@@ -1,5 +1,7 @@
 # Simple Data Integration Project
 Not all solutions need to be complex. This project focuses on supporting small and medium-scale data scenarios, avoiding the need for technologies designed for massive datasets. It's a straightforward data integration project aiming to seamlessly combine data from various sources, including CSVs, JSON, Parquet (denormalized data), and a MySQL database.
+### Architecture:
+<img width="817" alt="post4" src="https://github.com/Mouhamed-Jinja/Postgre-DWH/assets/132110499/ba0263e5-52e1-45bc-9d1a-1b0d16fecd05">
 
 ## Project Overview
 - Data Integration: The project involves integrating data from diverse sources into a unified format.
@@ -26,6 +28,12 @@ Not all solutions need to be complex. This project focuses on supporting small a
 - SQL Queries: Connect to the PostgreSQL database directly and write SQL queries to retrieve and analyze data according to specific needs.
 
 - This ensures a flexible and user-friendly environment for a variety of data-related tasks, from exploratory data analysis to complex machine learning model development. The integration of Jupyter services adds an extra layer of accessibility, enabling team members to work in a familiar and interactive notebook environment.
+### Star Schema:
+<img width="644" alt="Screenshot 2023-12-13 112353" src="https://github.com/Mouhamed-Jinja/Postgre-DWH/assets/132110499/f12c22ff-4aeb-45af-a05f-bdc9e7004af4">
+
+### Dashboard Created Using PowerBI:
+- You can interact with the Dashboard through this link: https://www.novypro.com/project/fraud-sales-analysis
+<img width="526" alt="Screenshot 2023-12-13 164544" src="https://github.com/Mouhamed-Jinja/Postgre-DWH/assets/132110499/e0782892-4af8-4357-a25b-1898e16f9109">
 
 # Getting Started
 To start using this solution, follow these simple steps:
