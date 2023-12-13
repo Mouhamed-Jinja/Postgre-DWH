@@ -49,6 +49,19 @@ To start using this solution, follow these simple steps:
   ```
     CREATE DATABASE fraud;
   ```
+- Now The cluster is ready to submit the spark jobs, make sure that you are in the path where jars exist, or add the jars link before them:
+  ```
+    docker exec -it spark_master bash
+  ```
+  ```
+    cd /drivers
+  ```
+  ```
+    spark-submit --jars mysql-connector-j-8.2.0.jar,postgresql-42.5.3.jar /opt/bitnami/spark/jobs/Extract.py
+  ```
+  ```
+    spark-submit --jars mysql-connector-j-8.2.0.jar,postgresql-42.5.3.jar /opt/bitnami/spark/jobs/Transform.py
+  ```
 
 
 
